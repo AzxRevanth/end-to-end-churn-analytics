@@ -1,5 +1,7 @@
 # Customer Churn Analytics and Retention Prioritization System
 
+Dashboard Link: [https://public.tableau.com/app/profile/revanth.ak/viz/ChurnAnalysis_17695521663480/Dashboard1]
+
 ## Overview
 
 Customer churn has a direct impact on revenue and long-term growth.  
@@ -66,6 +68,10 @@ An analytics dashboard was built to understand churn patterns before modeling, i
 - Customer engagement depth vs churn  
 
 This step ensures the ML model is grounded in business context.
+
+<img width="1600" height="871" alt="image" src="https://github.com/user-attachments/assets/d164c072-0a11-4252-901f-33e21e8d52c0" />
+
+<img width="1600" height="874" alt="image" src="https://github.com/user-attachments/assets/9323293c-9e43-47d7-bfc2-d2a4f502ccf4" />
 
 ---
 
