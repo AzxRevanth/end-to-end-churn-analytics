@@ -1,13 +1,21 @@
 # Customer Churn Analytics and Retention Prioritization System
 
-Dashboard Link: [https://public.tableau.com/app/profile/revanth.ak/viz/ChurnAnalysis_17695521663480/Dashboard1]
+Dashboard Link: [Tableau Public Dashboard](https://public.tableau.com/app/profile/revanth.ak/viz/ChurnAnalysis_17695521663480/Dashboard1)
 
 ## Overview
 
 Customer churn has a direct impact on revenue and long-term growth.  
-This project builds an **end-to-end churn analytics and prediction system** that combines exploratory analysis, machine learning, and business-focused scoring to support retention decisions.
+This project builds an **end-to-end churn analytics and prediction system** that combines exploratory analysis, machine learning, **risk scoring**, and **model monitoring** to support data-driven retention decisions.
 
-The goal is not only to predict churn, but to **convert predictions into actionable insights** using dashboards and automated pipelines.
+The focus is not only on predicting churn, but on **ranking customers by risk and value**, tracking model stability over time, and converting predictions into **actionable insights** through dashboards and automated scoring pipelines.
+
+---
+
+> **Project Status**
+>  
+> This repository currently contains the full data analytics and machine learning pipeline for customer churn analysis, including data preprocessing, feature engineering, model training, scoring, and monitoring metrics.
+>  
+> Containerization and orchestration (Docker-based batch scoring) are planned as the next phase and are not included in this version.
 
 ---
 
@@ -30,17 +38,33 @@ This project focuses on answering the following questions using analytics and ma
 
 ---
 
+## Project Architecture (Current)
+
+1. Raw customer data is cleaned and stored in PostgreSQL.
+2. Monthly customer snapshots are simulated to represent time-based behavior.
+3. Machine learning models are trained using historical churn data.
+4. Each monthly snapshot is scored to generate:
+   - Churn probability
+   - Retention priority score
+5. Model outputs and monitoring metrics are stored back in PostgreSQL.
+6. Tableau connects directly to PostgreSQL for analytics and visualization.
+
+This design separates analytics, modeling, and visualization while keeping PostgreSQL as the central data layer.
+
+---
+
 ## Tech Stack
 
-- **Python** – Data cleaning, feature engineering, and ML  
-- **PostgreSQL** – Customer data and prediction storage  
-- **Tableau** – Analytics and ML results dashboards  
-- **Scikit-learn** – Logistic Regression and Random Forest 
+- **Python** – Data preprocessing, feature engineering, model training, and scoring
+- **PostgreSQL** – Source of truth for customer data, predictions, and monitoring metrics
+- **Tableau** – Analytics and ML results dashboards
+- **Scikit-learn** – Logistic Regression and Random Forest models
+- **Pandas / NumPy** – Data manipulation and simulation
 
 ---
 
 ## Dataset
-Link: [https://www.kaggle.com/datasets/blastchar/telco-customer-churn]
+Link: [Dataset Link](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)<br>
 Telecom customer churn dataset containing:
 - Tenure and contract information  
 - Monthly and total charges  
@@ -75,23 +99,26 @@ This step ensures the ML model is grounded in business context.
 
 ---
 
-## Machine Learning Approach
+## Machine Learning
 
-### Models
-- **Logistic Regression (primary model)**  
-  Used for interpretability and stable churn probabilities.
-- **Random Forest (validation model)**  
-  Used to validate non-linear patterns and feature importance.
+- **Primary Model:** Logistic Regression  
+  Chosen for interpretability and stable probability outputs.
 
-### Feature Engineering
-- Tenure-based features  
-- Spending behavior and value proxies  
-- Service engagement metrics  
-- Contract and billing attributes  
-- Pricing and tenure interaction features  
+- **Challenger Model:** Random Forest  
+  Used to validate patterns and compare performance.
 
-### Evaluation
-Models were evaluated using ROC-AUC, precision/recall, and confusion matrices, with emphasis on **ranking churn risk** rather than raw accuracy.
+### Evaluation Metrics
+- ROC-AUC
+- Precision / Recall for churned customers
+- Confusion matrix analysis
+
+### Monitoring Metrics
+- Average churn probability per month
+- High-risk customer percentage
+- Revenue at risk
+- Month-over-month prediction stability (Spearman and Pearson correlation)
+
+The focus is on ranking customers by churn risk rather than maximizing raw accuracy.
 
 ---
 
@@ -120,6 +147,16 @@ Navigation buttons connect analytics and ML dashboards.
 
 ---
 
+## Model Monitoring
+
+Monthly monitoring metrics are computed after each scoring run and stored in PostgreSQL to track model behavior over time.
+
+Tracked metrics include average churn probability, high-risk customer percentage, revenue at risk, and a **rank stability score** based on month-over-month correlation of churn predictions. These metrics help assess prediction consistency and detect potential drift, ensuring the model remains reliable as customer behavior changes.
+
+<img width="873" height="164" alt="image" src="https://github.com/user-attachments/assets/540f5c47-0c27-4697-8a78-d3d3c23f6865" />
+
+---
+
 ## Data Storage and Integration
 
 - Clean customer data and predictions are stored in PostgreSQL  
@@ -129,4 +166,15 @@ Navigation buttons connect analytics and ML dashboards.
 This design keeps analytics, ML outputs, and visualization cleanly separated.
 
 ---
+
+## Current Limitations
+
+- Model scoring is executed via Python scripts and is not yet containerized.
+- No automated scheduler is used in the current version.
+- Monitoring metrics are computed offline rather than through a managed orchestration system.
+
+These limitations are intentional for this phase and will be addressed in future iterations.
+
+---
+
 
